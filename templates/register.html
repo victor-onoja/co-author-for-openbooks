@@ -8,9 +8,25 @@
   </head>
   <body>
     <main>
-      <input type="text" /> <input type="text" /> <input type="text" />
-      <!-- todo: press enter button to submit -->
-      <button>Register</button>
+      <h1>Register</h1>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>{{ form.email.label }}</div>
+        <div>{{ form.email }}</div>
+        <div>{{ form.penname.label }}</div>
+        <div>{{ form.penname }}</div>
+        <div>{{ form.password.label }}</div>
+        <div>{{ form.password }}</div>
+        <button type="submit">Register</button>
+      </form>
+      {% with messages = get_flashed_messages(with_categories = true) %} {% if
+      messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
     </main>
   </body>
 </html>

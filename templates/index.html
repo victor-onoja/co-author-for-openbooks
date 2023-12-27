@@ -16,8 +16,17 @@
           in real time!
         </h3>
         <!-- primary and secondary buttons -->
-        <button>Login</button>
+        <a href="{{ url_for('login') }}"><button>LogIn</button></a>
+        <a href="{{ url_for('register') }}"><button>Register</button></a>
       </header>
+      {% with messages = get_flashed_messages(with_categories = true) %} {% if
+      messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
     </main>
   </body>
 </html>

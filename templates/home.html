@@ -9,11 +9,21 @@
   <body>
     <nav>
       <h1>co-author for open books</h1>
+      <span>Welcome, {{ current_user.penname }}!</span>
+      <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
     </nav>
     <main>
       <button>Start a new book</button>
       <button>My openbooks</button>
       <button>Explore openbooks</button>
+      {% with messages = get_flashed_messages(with_categories = true) %} {% if
+      messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
     </main>
     <footer>
       <h5>built by blasttech</h5>
