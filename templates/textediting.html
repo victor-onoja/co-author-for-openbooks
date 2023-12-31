@@ -5,14 +5,111 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Textediting</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 1em;
+        text-align: center;
+      }
+
+      nav button {
+        background-color: #fff;
+        color: #333;
+        padding: 0.5em;
+        margin: 0.5em;
+        border: none;
+        cursor: pointer;
+      }
+
+      main {
+        padding: 2em;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      textarea {
+        resize: none;
+        height: 300px;
+        max-height: 80vh; /* Set the maximum height relative to the viewport height */
+        width: 100%;
+        font-size: 18px;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        transition: border-color 0.3s ease;
+      }
+
+      textarea:focus {
+        border-color: #4caf50; /* Change border color on focus */
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 1em;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+
+      .flash-messages {
+        list-style: none;
+        padding: 0;
+      }
+
+      .flash-messages li {
+        margin-bottom: 0.5em;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 1em;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <nav>
       <h1>co-author for open books</h1>
+      <a href="{{ url_for('home') }}"><button>home</button></a>
     </nav>
     <main>
-      <input type="text" name="" id="" />
-      <div><button>publish</button><button>details</button></div>
+      <h1>Text Editing</h1>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>{{ form.content.label }}</div>
+        <div>
+          <textarea name="content">{{ openbook_data.content }}</textarea>
+        </div>
+        <button type="submit">Save Story</button>
+      </form>
+      {% with messages = get_flashed_messages(with_categories = true) %} {% if
+      messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
     </main>
     <footer>
       <h5>built by blasttech</h5>

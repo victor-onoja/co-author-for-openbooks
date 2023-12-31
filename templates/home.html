@@ -13,9 +13,16 @@
       <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
     </nav>
     <main>
-      <button>Start a new book</button>
-      <button>My openbooks</button>
-      <button>Explore openbooks</button>
+      <a href="{{ url_for('new_openbook_form') }}"
+        ><button>Start a new book</button></a
+      >
+      <a href="{{ url_for('my_openbooks') }}"><button>My openbooks</button></a>
+      <a href="{{ url_for('explore_openbooks') }}"
+        ><button>Explore openbooks</button></a
+      >
+      <a href="{{ url_for('review_text_editing_requests') }}"
+        ><button>Review Requests</button></a
+      >
       {% with messages = get_flashed_messages(with_categories = true) %} {% if
       messages %}
       <ul class="flash-messages">

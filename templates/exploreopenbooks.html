@@ -9,9 +9,21 @@
   <body>
     <nav>
       <h1>co-author for open books</h1>
+      <span>Welcome, {{ current_user.penname }}!</span>
+      <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
     </nav>
     <main>
-      <!-- open books cards -->
+      <h1>Explore Openbooks</h1>
+      {% for openbook in openbooks %}
+      <div>
+        <h2>{{ openbook.title }}</h2>
+        <p>{{ openbook.description }}</p>
+        <p>Creator: {{ openbook.creator }}</p>
+        <a href="{{ url_for('text_editing', openbook_id=openbook._id) }}"
+          ><button>Edit</button></a
+        >
+      </div>
+      {% endfor %}
     </main>
     <footer>
       <h5>built by blasttech</h5>

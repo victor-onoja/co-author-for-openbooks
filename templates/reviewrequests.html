@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Review Text Editing Requests</title>
+    <style>
+      .editing-indicator {
+        color: #ff9800; /* Use your desired color for the indicator */
+        font-weight: bold;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <h1>co-author for open books</h1>
+      <a href="{{ url_for('home') }}"><button>home</button></a>
+      <span>Welcome, {{ current_user.penname }}!</span>
+      <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
+    </nav>
+    <main>
+      <h1>Review Text Editing Requests</h1>
+      {% if requests %}
+      <ul>
+        {% for request in requests %}
+        <li>
+          <p><strong>New Creator:</strong> {{ request.new_creator }}</p>
+          <p>
+            <strong>Original Creator:</strong> {{ request.original_creator }}
+          </p>
+          <p>
+            <strong>Status:</strong>
+            {% if request.is_approved == true %} Approved {% if
+            request.original_document_id == openbook_id %}
+            <span class="editing-indicator">Editing Approved</span>
+            {% endif %} {% elif request.is_approved == false %} Disapproved {%
+            else %} Pending
+            <a
+              href="{{ url_for('approve_request', request_id=request._id, action='approve') }}"
+              >Approve</a
+            >
+            /
+            <a
+              href="{{ url_for('approve_request', request_id=request._id, action='disapprove') }}"
+              >Disapprove</a
+            >
+            {% endif %}
+          </p>
+          {% if request.edited_content %}
+          <p><strong>Edited Content:</strong> {{ request.edited_content }}</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No text editing requests.</p>
+      {% endif %}
+    </main>
+    <footer>
+      <h5>built by blasttech</h5>
+      <span>
+        <!-- Add your social media links or icons -->
+      </span>
+    </footer>
+  </body>
+</html>

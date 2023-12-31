@@ -8,11 +8,17 @@
   </head>
   <body>
     <main>
-      <form action="">
-        <!-- add radi0 button to toggle private public -->
-        <input type="text" name="" id="" /><input type="text" />
-        <!-- add input field to collect book cover -->
-        <button type="submit">Submit</button>
+      <h1>Create a New Open Book</h1>
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>{{ form.title.label }}</div>
+        <div>{{ form.title }}</div>
+        <div>{{ form.description.label }}</div>
+        <div>{{ form.description }}</div>
+        <div>{{ form.is_private }}</div>
+        <div>{{ form.cover_image.label }}</div>
+        <div>{{ form.cover_image }}</div>
+        <button type="submit">Create Open Book</button>
       </form>
     </main>
   </body>
