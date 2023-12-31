@@ -6,10 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Review Text Editing Requests</title>
     <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 1em;
+        text-align: center;
+      }
+
+      nav h1 {
+        margin: 0;
+      }
+
+      nav button,
+      nav span {
+        margin: 0.5em;
+      }
+
+      main {
+        padding: 2em;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        border: 1px solid #ddd;
+        padding: 1em;
+        margin-bottom: 1em;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+
       .editing-indicator {
         color: #ff9800; /* Use your desired color for the indicator */
         font-weight: bold;
         margin-left: 10px;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 1em;
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+
+      footer h5 {
+        margin: 0;
+      }
+
+      footer span {
+        display: inline-block;
+        margin-top: 0.5em;
+      }
+
+      footer a {
+        color: white;
+        text-decoration: none;
+        margin-right: 1em;
       }
     </style>
   </head>
