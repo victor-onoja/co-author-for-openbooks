@@ -88,8 +88,14 @@
       {% for openbook in openbooks %}
       <div>
         <h2>{{ openbook.title }}</h2>
+        <p><strong>Creator:</strong> {{ openbook.creator }}</p>
+        {% if openbook.collaborators %}
+        <p>
+          <strong>Collaborator(s):</strong> {{ ', '.join(openbook.collaborators)
+          }}
+        </p>
+        {% endif %}
         <p>{{ openbook.description }}</p>
-        <p>Creator: {{ openbook.creator }}</p>
         <a href="{{ url_for('text_editing', openbook_id=openbook._id) }}"
           ><button>Edit</button></a
         >

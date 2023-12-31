@@ -224,7 +224,7 @@ def approve_request(request_id, action):
         text_editing_requests.update_one({'_id': ObjectId(request_id)}, {'$set': {'is_approved': True}})
         openbooks.update_one(
             {'_id': ObjectId(request_data['original_document_id'])},
-            {'$set': {'content': request_data['edited_content']}}
+            {'$set': {'content': request_data['edited_content']},  '$addToSet': {'collaborators': request_data['new_creator']}}
         )
         flash('Text editing request approved.', 'success')
     elif action == 'disapprove':
@@ -249,7 +249,19 @@ def explore_openbooks():
     # Fetch all non-private open books
     public_openbooks = openbooks.find({'is_private': False})
 
-    return render_template('exploreopenbooks.html', openbooks=public_openbooks)
+    openbooks_info = []
+    for openbook in public_openbooks:
+        # Extract relevant information
+        openbook_info = {
+            'title': openbook['title'],
+            'description': openbook['description'],
+            'creator': openbook['creator'],
+            '_id': openbook['_id'],
+            'collaborators': openbook.get('collaborators', []),
+        }
+        openbooks_info.append(openbook_info)
+
+    return render_template('exploreopenbooks.html', openbooks=openbooks_info)
 
 
 #  logout route
