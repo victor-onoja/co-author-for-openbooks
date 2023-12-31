@@ -1,4 +1,4 @@
-# Your Project Title
+# Coauthor for openbooks
 
 ## Video Demo
 
