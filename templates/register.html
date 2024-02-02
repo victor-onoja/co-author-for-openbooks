@@ -79,7 +79,7 @@
     <main>
       <h1>Register</h1>
       <form method="POST">
-        {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }} {{ form.csrf_token }}
         <div>{{ form.email.label }}</div>
         <div>{{ form.email }}</div>
         <div>{{ form.penname.label }}</div>

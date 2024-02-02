@@ -95,7 +95,7 @@
     <main>
       <h1>Text Editing</h1>
       <form method="POST">
-        {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }} {{ form.csrf_token }}
         <div>{{ form.content.label }}</div>
         <div>
           <textarea name="content">{{ openbook_data.content }}</textarea>
