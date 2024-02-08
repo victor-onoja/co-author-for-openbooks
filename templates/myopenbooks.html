@@ -98,6 +98,9 @@
           <a href="{{ url_for('text_editing', openbook_id=openbook._id) }}"
             ><button>Edit Content</button></a
           >
+          <a href="{{ url_for('read_openbook', openbook_id=openbook._id) }}"
+            ><button>Read</button></a
+          >
         </li>
         {% endfor %}
       </ul>

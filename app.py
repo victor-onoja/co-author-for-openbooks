@@ -1,6 +1,7 @@
 # imports
 
 import os
+from os.path import join
 from flask import Flask, render_template, redirect, url_for, redirect, request, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user, user_loaded_from_request
 from flask_pymongo import PyMongo
@@ -34,7 +35,7 @@ openbooks = db.openbooks
 text_editing_requests = db.text_editing_requests
 
 photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(os.getcwd(), 'uploads')
+app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
 configure_uploads(app, photos)
 
 # test mongodb connection
@@ -132,7 +133,7 @@ def new_openbook_form():
         if cover_image:
             # Save the cover image
             filename = photos.save(cover_image)
-            cover_image_path = photos.url(filename)
+            cover_image_path = join(app.config['UPLOADED_PHOTOS_DEST'], filename)
         else:
             cover_image_path = None
         openbook_data = {
@@ -197,6 +198,17 @@ def text_editing(openbook_id):
 
     # Render the template with the pre-filled form
     return render_template('textediting.html', form=form, openbook_data=openbook_data)
+
+# read openbook
+@app.route('/read_openbook/<openbook_id>')
+@login_required
+def read_openbook(openbook_id):
+    openbook_data = openbooks.find_one({'_id': ObjectId(openbook_id)})
+    if not openbook_data:
+        flash('OpenBook not found!', 'danger')
+        return redirect(url_for('home'))
+    
+    return render_template('read_openbook.html', openbook_data=openbook_data)
 
 # review text editing route
 
