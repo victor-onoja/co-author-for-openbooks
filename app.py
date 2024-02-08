@@ -293,30 +293,39 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(), Length(min=6, max=60)])
     submit = SubmitField('Register')
 
-    def validate_penname(self, penname):
-        user = users.find_one({'penname': penname.data})
-        if user:
-            raise ValidationError('Penname already taken. Please choose another one :(')
-
-    def validate_email(self, email):
-        user = users.find_one({'email': email.data})
-        if user:
-            raise ValidationError('Email already registered. Please use another email address.')
-
-@app.route('/register', methods = ['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        # Hash the password
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
-        user_data = {'email': form.email.data,'penname': form.penname.data, 'password': hashed_password}
-        users.insert_one(user_data)
-        flash('Registration successful!', 'success')
+        # Check if the email is already registered
+        existing_user = users.find_one({'email': form.email.data})
+        if existing_user:
+            flash('Email already registered. Please use another email address.', 'error')
+            return redirect(url_for('register'))
 
-        return redirect(url_for('login'))
+        # Check if the penname is already taken
+        existing_penname = users.find_one({'penname': form.penname.data})
+        if existing_penname:
+            flash('Penname already taken. Please choose another one.', 'error')
+            return redirect(url_for('register'))
 
-    return render_template('register.html', form = form)
+        # Insert the new user data into the database
+        user_data = {'email': form.email.data, 'penname': form.penname.data, 'password': hashed_password}
+        try:
+            users.insert_one(user_data)
+            flash('Registration successful!', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash('An error occurred while registering. Please try again later.', 'error')
+            app.logger.error(f"Error during user registration: {str(e)}")
+            return redirect(url_for('register'))
+
+    return render_template('register.html', form=form)
+
 
 # app main
 
