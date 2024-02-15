@@ -1,6 +1,9 @@
 # imports
 
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from os.path import join
 from flask import Flask, render_template, redirect, url_for, redirect, request, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user, user_loaded_from_request
@@ -34,9 +37,12 @@ users = db.users
 openbooks = db.openbooks
 text_editing_requests = db.text_editing_requests
 
-photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads'
-configure_uploads(app, photos)
+# Configure Cloudinary credentials
+cloudinary.config(
+    cloud_name="dati00h7i",
+    api_key="613737112654711",
+    api_secret="VK0g88htvAGc4E9qX7_ZbHkA6ik"
+)
 
 # test mongodb connection
 
@@ -131,16 +137,16 @@ def new_openbook_form():
         cover_image = form.cover_image.data
 
         if cover_image:
-            # Save the cover image
-            filename = photos.save(cover_image)
-            cover_image_path = join(app.config['UPLOADED_PHOTOS_DEST'], filename)
+            # Upload image to Cloudinary
+            uploaded_image = cloudinary.uploader.upload(cover_image)
+            cover_image_url = uploaded_image['url']
         else:
-            cover_image_path = None
+            cover_image_url = None
         openbook_data = {
             'title': form.title.data,
             'description': form.description.data,
             'is_private': form.is_private.data,
-            'cover_image': cover_image_path,
+            'cover_image': cover_image_url,
             'creator': current_user.penname,
             'created_at': datetime.utcnow(),
             'content': ''
