@@ -125,9 +125,22 @@
             id="cover_image"
             name="cover_image"
             accept="image/*"
+            onchange="previewImage(event)"
           />
           <label for="cover_image">Choose Cover Image</label>
         </div>
+        <div id="image_preview"></div>
+        <script>
+          function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              var output = document.getElementById("image_preview");
+              output.innerHTML =
+                '<img src="' + reader.result + '" width="200" />';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+          }
+        </script>
         <button type="submit">Create Open Book</button>
       </form>
     </div>
