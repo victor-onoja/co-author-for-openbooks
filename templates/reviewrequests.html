@@ -23,9 +23,24 @@
 
       nav h1 {
         margin: 0;
+        color: white;
       }
 
-      nav button,
+      nav button {
+        margin: 0.5em;
+        cursor: pointer;
+        border: none;
+        padding: 0.5em;
+        background-color: #fff;
+        color: #333;
+        border-radius: 3px;
+        transition: background-color 0.3s ease;
+      }
+
+      nav button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+
       nav span {
         margin: 0.5em;
       }
@@ -94,7 +109,7 @@
   <body>
     <nav>
       <h1>co-author for open books</h1>
-      <a href="{{ url_for('home') }}"><button>home</button></a>
+      <a href="{{ url_for('home') }}"><button>Home</button></a>
       <span>Welcome, {{ current_user.penname }}!</span>
       <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
     </nav>
@@ -138,6 +153,9 @@
     </main>
     <footer>
       <h5>built by blasttech</h5>
+      <p>
+        &copy; {{ current_year }} co-author for open books. All rights reserved.
+      </p>
       <span>
         <!-- Add your social media links or icons -->
       </span>

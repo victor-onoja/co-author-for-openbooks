@@ -14,7 +14,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, PasswordField, SubmitField, EmailField, TextAreaField, BooleanField, FileField
-from wtforms.validators import InputRequired, Length, EqualTo, Email, ValidationError
+from wtforms.validators import InputRequired, Length, EqualTo, Email, ValidationError, DataRequired
 from flask_bcrypt import Bcrypt
 from bson import ObjectId
 from datetime import datetime
@@ -56,7 +56,8 @@ except Exception as e:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    current_year = datetime.now().year
+    return render_template('index.html', current_year=current_year)
 
 
 # login, user functions
@@ -109,7 +110,8 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html')
+    current_year = datetime.now().year
+    return render_template('home.html', current_year=current_year)
 
 # new open book functions
 
@@ -131,6 +133,7 @@ class NewOpenBookForm(FlaskForm):
 def new_openbook_form():
 
     form = NewOpenBookForm()
+    current_year = datetime.now().year
   
     if form.validate_on_submit():
        
@@ -156,13 +159,14 @@ def new_openbook_form():
         flash('Open Book created successfully!', 'success')
         return redirect(url_for('text_editing', openbook_id = openbook_data['_id']))
 
-    return render_template('startnewopenbookform.html', form = form)
+    return render_template('startnewopenbookform.html', form = form, current_year=current_year)
 
 # textediting route
 
 @app.route('/text_editing/<openbook_id>', methods=['GET', 'POST'])
 @login_required
 def text_editing(openbook_id):
+    current_year = datetime.now().year
     # Retrieve the existing openbook data
     openbook_data = openbooks.find_one({'_id': ObjectId(openbook_id)})
 
@@ -203,7 +207,7 @@ def text_editing(openbook_id):
                 flash('No changes detected. Request not submitted.', 'warning')
 
     # Render the template with the pre-filled form
-    return render_template('textediting.html', form=form, openbook_data=openbook_data)
+    return render_template('textediting.html', form=form, openbook_data=openbook_data, current_year=current_year)
 
 # read openbook
 @app.route('/read_openbook/<openbook_id>')
@@ -222,10 +226,12 @@ def read_openbook(openbook_id):
 @login_required
 def review_text_editing_requests():
 
+    current_year = datetime.now().year
+
     # Retrieve text editing requests for the current user
     requests = text_editing_requests.find({'original_creator': current_user.penname})
 
-    return render_template('reviewrequests.html', requests=requests)
+    return render_template('reviewrequests.html', requests=requests, current_year=current_year)
 
 @app.route('/approve_request/<request_id>/<action>')
 @login_required
@@ -256,14 +262,16 @@ def approve_request(request_id, action):
 @app.route('/my_openbooks')
 @login_required
 def my_openbooks():
+    current_year = datetime.now().year
     user_openbooks = openbooks.find({'creator': current_user.penname})
-    return render_template('myopenbooks.html', openbooks=user_openbooks)
+    return render_template('myopenbooks.html', openbooks=user_openbooks, current_year=current_year)
 
 # explore_openbooks route
 
 @app.route('/explore_openbooks')
 @login_required
 def explore_openbooks():
+    current_year = datetime.now().year
     # Fetch all non-private open books
     public_openbooks = openbooks.find({'is_private': False})
 
@@ -279,7 +287,7 @@ def explore_openbooks():
         }
         openbooks_info.append(openbook_info)
 
-    return render_template('exploreopenbooks.html', openbooks=openbooks_info)
+    return render_template('exploreopenbooks.html', openbooks=openbooks_info, current_year=current_year)
 
 
 #  logout route
@@ -297,6 +305,7 @@ class RegistrationForm(FlaskForm):
     email = EmailField('Email', validators=[InputRequired(), Email()])
     penname = StringField('Penname', validators=[InputRequired(), Length(min=3, max=20)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=6, max=60)])
+    agree = BooleanField('I agree to the Terms of Service and User Agreement', validators=[DataRequired()])
     submit = SubmitField('Register')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -304,6 +313,10 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        if not form.agree.data:
+            flash('You must agree to the Terms of Service and User Agreement.', 'error')
+            return redirect(url_for('register'))
+
         # Hash the password
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
@@ -331,6 +344,12 @@ def register():
             return redirect(url_for('register'))
 
     return render_template('register.html', form=form)
+
+#  terms of service 
+
+@app.route('/terms_of_service')
+def terms_of_service():
+    return render_template('terms_of_service.html')
 
 
 # app main

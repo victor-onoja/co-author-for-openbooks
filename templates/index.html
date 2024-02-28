@@ -44,6 +44,7 @@
         font-size: 1em;
         margin: 0.5em;
         text-decoration: none;
+        border-radius: 3px;
         transition: background-color 0.3s ease;
       }
 
@@ -59,11 +60,16 @@
       .flash-messages li {
         margin-bottom: 0.5em;
       }
+
+      .copyright-notice {
+        margin-top: 2em;
+        font-size: 0.8em;
+        color: #888;
+      }
     </style>
   </head>
   <body>
     <main>
-      <!-- todo: give main default padding -->
       <header>
         <h1>This is co-author for open books</h1>
         <h3>
@@ -82,6 +88,11 @@
         {% endfor %}
       </ul>
       {% endif %} {% endwith %}
+
+      <!-- Copyright Notice -->
+      <div class="copyright-notice">
+        &copy; {{ current_year }} Co-Author for Open Books. All rights reserved.
+      </div>
     </main>
   </body>
 </html>

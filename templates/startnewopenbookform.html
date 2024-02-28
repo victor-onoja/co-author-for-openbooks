@@ -40,6 +40,8 @@
 
       label {
         font-weight: bold;
+        display: flex;
+        align-items: center; /* Align items vertically */
       }
 
       input[type="text"],
@@ -53,7 +55,7 @@
       }
 
       input[type="checkbox"] {
-        width: auto;
+        margin-right: 10px; /* Add margin to separate checkbox from label */
       }
 
       .file-upload {
@@ -101,6 +103,13 @@
       button[type="submit"]:hover {
         background-color: #45a049;
       }
+
+      .copyright-notice {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+      }
     </style>
   </head>
   <body>
@@ -110,6 +119,10 @@
         {{ form.hidden_tag() }} {{ form.csrf_token }}
         <label for="title">Title</label>
         <input type="text" id="title" name="title" required />
+        <label>
+          <input type="checkbox" id="is_private" name="is_private" />
+          Private
+        </label>
         <label for="description">Description</label>
         <textarea
           id="description"
@@ -117,8 +130,6 @@
           rows="4"
           required
         ></textarea>
-        <label for="is_private">Private</label>
-        <input type="checkbox" id="is_private" name="is_private" />
         <div class="file-upload">
           <input
             type="file"
@@ -143,6 +154,14 @@
         </script>
         <button type="submit">Create Open Book</button>
       </form>
+      <!-- Copyright notice -->
+      <div class="copyright-notice">
+        <p>All content created by users is protected by copyright.</p>
+        <p>
+          &copy; {{ current_year }} Co-Author for OpenBooks. All rights
+          reserved.
+        </p>
+      </div>
     </div>
   </body>
 </html>

@@ -24,11 +24,12 @@
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         width: 300px;
-        text-align: center;
+        text-align: left; /* Align form to the left */
       }
 
       h1 {
         color: #333;
+        text-align: center; /* Center align the title */
       }
 
       form {
@@ -73,6 +74,19 @@
         margin-bottom: 0.5em;
         color: #d9534f; /* Bootstrap's danger color for flash messages */
       }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .checkbox-container input[type="checkbox"] {
+        margin-right: 0.5em;
+      }
+
+      .centered {
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -86,8 +100,14 @@
         <div>{{ form.penname }}</div>
         <div>{{ form.password.label }}</div>
         <div>{{ form.password }}</div>
+        <div class="checkbox-container">
+          {{ form.agree }} {{ form.agree.label }}
+        </div>
         <button type="submit">Register</button>
       </form>
+      <div class="centered">
+        <p><a href="{{ url_for('terms_of_service') }}">Terms of Service</a></p>
+      </div>
       {% with messages = get_flashed_messages(with_categories = true) %} {% if
       messages %}
       <ul class="flash-messages">

@@ -79,11 +79,16 @@
         padding: 1em;
         text-align: center;
       }
+
+      footer p {
+        color: white;
+      }
     </style>
   </head>
   <body>
     <nav>
       <h1>co-author for open books</h1>
+      <a href="{{ url_for('home') }}"><button>Home</button></a>
       <span>Welcome, {{ current_user.penname }}!</span>
       <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
     </nav>
@@ -110,6 +115,9 @@
     </main>
     <footer>
       <h5>built by blasttech</h5>
+      <p>
+        &copy; {{ current_year }} co-author for open books. All rights reserved.
+      </p>
       <span
         ><a href="http://">
           <!-- icon or image twitter, whatsapp, linkedin --> </a
