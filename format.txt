@@ -1,0 +1,16 @@
+supabase 1: https://supabase.com/docs/reference/dart/delete
+supabase 2: https://supabase.com/dashboard/project/odlnrfizgyyjnipouhct/editor/28691
+callup247 figma: https://www.figma.com/file/IdsmgpCqgDtvpB2Vexzq8Z/Call-up-247-Mobile-App?type=design&node-id=7-294&mode=design&t=htuyD4ceeCADI40r-0
+push notifications youtube: https://www.youtube.com/watch?v=CiSv9E6ZKVc
+callup247 proj docs: https://docs.google.com/spreadsheets/d/1VsrOgd3dTRKWS2EAL-BUHgrm2vak01ZVELXRjsts2nA/edit#gid=0
+cloudinary: https://console.cloudinary.com/pm/c-bb97b19091f57f9fe517fb4f8faf95/media-explorer
+mongodb: https://cloud.mongodb.com/v2/6588ae19e00058779f9a6139#/metrics/replicaSet/6588aea8c5065d7d45c470a0/explorer/main/openbooks/find
+gpt: https://chat.openai.com/c/c97a95f4-59d4-4921-9066-ecfef72b497f
+discord: https://discord.com/channels/1132058494435070097/1144724721754177596
+biscuit beacon trello: https://trello.com/b/NE7wvwVJ/app-development-fall-2023-onwards
+biscuit beacon search figma: https://www.figma.com/file/QUsIxMvY4rcKGJwRTUt4rG/Biscuit-Beacon---Search-Beacons-feature?type=design&node-id=484-971&mode=design&t=JV7Cst2SsR0r6x5Y-0
+biscuit beacon attendance: https://docs.google.com/spreadsheets/d/104X4xyrvq6S_V80TgDWPLfgLA7SJ27R32MUuF4BtIyo/edit?pli=1#gid=0
+kotlin playground: https://play.kotlinlang.org/#eyJ2ZXJzaW9uIjoiMS45LjIyIiwicGxhdGZvcm0iOiJqYXZhIiwiYXJncyI6IiIsIm5vbmVNYXJrZXJzIjp0cnVlLCJ0aGVtZSI6ImlkZWEiLCJjb2RlIjoiLyoqXG4gKiBZb3UgY2FuIGVkaXQsIHJ1biwgYW5kIHNoYXJlIHRoaXMgY29kZS5cbiAqIHBsYXkua290bGlubGFuZy5vcmdcbiAqL1xuZnVuIG1haW4oKSB7XG4gICAgcHJpbnRsbihcIkhlbGxvLCB3b3JsZCBpbm5pdCBcIilcbn0ifQ==
+temp mail: https://temp-mail.org/en/view/65d4b5a383700603a2eb7a57
+flutterwavemedium: https://medium.com/podiihq/integrating-flutterwave-with-a-flutter-app-5768e9ee2e99
+flutterwavedocs: https://developer.flutterwave.com/docs/integration-guides/testing-helpers/
