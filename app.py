@@ -1,5 +1,6 @@
 # imports
 
+import atexit
 import os
 import cloudinary
 import cloudinary.uploader
@@ -19,6 +20,7 @@ from flask_bcrypt import Bcrypt
 from bson import ObjectId
 from datetime import datetime
 from flask_uploads import UploadSet, IMAGES, configure_uploads
+from apscheduler.schedulers.background import BackgroundScheduler
 
 # variables
 
@@ -37,6 +39,11 @@ users = db.users
 openbooks = db.openbooks
 text_editing_requests = db.text_editing_requests
 
+# Create indexes for text_editing_requests collection
+text_editing_requests.create_index("status")
+text_editing_requests.create_index("creator_notified")
+text_editing_requests.create_index("requester_notified")
+
 # Configure Cloudinary credentials
 cloudinary.config(
     cloud_name="dati00h7i",
@@ -51,6 +58,23 @@ try:
     print('Pinged your deployment. You successfully connected to MongoDB!')
 except Exception as e:
     print(e)
+
+    # Add this function to clean up old requests
+def cleanup_old_requests():
+    old_requests = text_editing_requests.find({
+        'creator_notified': True,
+        'requester_notified': True
+    })
+    
+    for request in old_requests:
+        text_editing_requests.delete_one({'_id': request['_id']})
+    
+    print(f"Cleanup complete. Deleted {old_requests.count()} old requests.")
+
+    # Set up the scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=cleanup_old_requests, trigger="interval", hours=730)
+scheduler.start()
 
 # index app route
 
@@ -111,6 +135,35 @@ def login():
 @login_required
 def home():
     current_year = datetime.now().year
+
+    # Check for pending requests for the original creator
+    pending_requests = text_editing_requests.find({
+        'original_creator': current_user.penname,
+        'status': 'pending',
+        'creator_notified': False
+    })
+    
+    for request in pending_requests:
+        flash(f"You have a pending request from {request['new_creator']}.", 'info')
+    
+    # Check for status updates for the requester
+    user_requests = text_editing_requests.find({
+        'new_creator': current_user.penname,
+    })
+
+    for request in user_requests:
+        if request['status'] == 'pending':
+            flash(f"Your request for '{request['original_document_title']}' is still pending from {request['original_creator']}.", 'info')
+        elif request['status'] in ['approved', 'disapproved'] and not request.get('requester_notified', False):
+            if request['status'] == 'approved':
+                flash(f"Your request for '{request['original_document_title']}' has been approved.", 'success')
+            else:
+                flash(f"Your request for '{request['original_document_title']}' has been disapproved.", 'info')
+            
+            text_editing_requests.update_one(
+                {'_id': request['_id']},
+                {'$set': {'requester_notified': True}}
+            )
     return render_template('home.html', current_year=current_year)
 
 # new open book functions
@@ -151,7 +204,7 @@ def new_openbook_form():
             'is_private': form.is_private.data,
             'cover_image': cover_image_url,
             'creator': current_user.penname,
-            'created_at': datetime.utcnow(),
+            'created_at': datetime.now(),
             'content': ''
         }    
 
@@ -194,10 +247,13 @@ def text_editing(openbook_id):
                 new_creator = current_user.penname
                 request_data = {
                     'original_document_id': openbook_id,
+                    'original_document_title': openbook_data['title'],
                     'original_creator': openbook_data['creator'],
                     'new_creator': new_creator,
-                    'is_approved': None,
-                    'edited_content': new_content
+                    'status': 'pending',
+                    'edited_content': new_content,
+                    'creator_notified': False,
+                    'requester_notified': False
                 }
                 text_editing_requests.insert_one(request_data)
 
@@ -245,14 +301,23 @@ def approve_request(request_id, action):
 
     # Update the request status based on the action
     if action == 'approve':
-        text_editing_requests.update_one({'_id': ObjectId(request_id)}, {'$set': {'is_approved': True}})
+        text_editing_requests.update_one({'_id': ObjectId(request_id)}, {'$set': {'status': 'approved',
+                'creator_notified': True,
+                'requester_notified': False}})
         openbooks.update_one(
             {'_id': ObjectId(request_data['original_document_id'])},
             {'$set': {'content': request_data['edited_content']},  '$addToSet': {'collaborators': request_data['new_creator']}}
         )
         flash('Text editing request approved.', 'success')
     elif action == 'disapprove':
-        text_editing_requests.delete_one({'_id': ObjectId(request_id)})
+        text_editing_requests.update_one(
+            {'_id': ObjectId(request_id)},
+            {'$set': {
+                'status': 'disapproved',
+                'creator_notified': True,
+                'requester_notified': False
+            }}
+        )
         flash('Text editing request disapproved.', 'success')
 
     return redirect(url_for('review_text_editing_requests'))
@@ -356,3 +421,5 @@ def terms_of_service():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
+atexit.register(lambda: scheduler.shutdown())

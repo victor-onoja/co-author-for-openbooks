@@ -7,30 +7,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Read OpenBook</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        margin: 0 auto;
+      }
+      .content-wrapper {
+        max-height: 800px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+      }
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
   </head>
   <body>
-    <h1>{{ openbook_data.title }}</h1>
-    <p><strong>Description:</strong> {{ openbook_data.description }}</p>
-    <p>
-      <strong>Privacy:</strong> {{ "Private" if openbook_data.is_private else
-      "Public" }}
-    </p>
-    {% if openbook_data.cover_image %}
-    <img
-      src="{{ openbook_data.cover_image }}"
-      alt="Cover Image"
-      style="max-width: 200px"
-    />
-    {% else %}
-    <p>No cover image available.</p>
-    {% endif %}
-    <p><strong>Creator:</strong> {{ openbook_data.creator }}</p>
-    <p><strong>Created At:</strong> {{ openbook_data.created_at }}</p>
-    <p>
-      <strong>Collaborators:</strong> {{ openbook_data.collaborators | join(',
-      ') }}
-    </p>
-    <h2>Content:</h2>
-    <pre>{{ openbook_data.content }}</pre>
+    <div class="container">
+      <h1>{{ openbook_data.title }}</h1>
+      <p><strong>Description:</strong> {{ openbook_data.description }}</p>
+      <p>
+        <strong>Privacy:</strong> {{ "Private" if openbook_data.is_private else
+        "Public" }}
+      </p>
+      {% if openbook_data.cover_image %}
+      <img
+        src="{{ openbook_data.cover_image }}"
+        alt="Cover Image"
+        style="max-width: 200px"
+      />
+      {% else %}
+      <p>No cover image available.</p>
+      {% endif %}
+      <p><strong>Creator:</strong> {{ openbook_data.creator }}</p>
+      <p><strong>Created At:</strong> {{ openbook_data.created_at }}</p>
+      <p>
+        <strong>Collaborators:</strong> {{ openbook_data.collaborators | join(',
+        ') }}
+      </p>
+      <h2>Content:</h2>
+      <div class="content-wrapper">
+        <pre>{{ openbook_data.content }}</pre>
+      </div>
+    </div>
   </body>
 </html>

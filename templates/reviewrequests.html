@@ -12,6 +12,9 @@
         padding: 0;
         background-color: #f4f4f4;
         color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
 
       nav {
@@ -46,7 +49,10 @@
       }
 
       main {
+        flex: 1;
         padding: 2em;
+        margin: 0.5em;
+        overflow-y: auto;
       }
 
       h1 {
@@ -85,9 +91,6 @@
         color: white;
         padding: 1em;
         text-align: center;
-        position: fixed;
-        bottom: 0;
-        width: 100%;
       }
 
       footer h5 {
@@ -125,11 +128,8 @@
           </p>
           <p>
             <strong>Status:</strong>
-            {% if request.is_approved == true %} Approved {% if
-            request.original_document_id == openbook_id %}
-            <span class="editing-indicator">Editing Approved</span>
-            {% endif %} {% elif request.is_approved == false %} Disapproved {%
-            else %} Pending
+            {% if request.status == 'approved' %} Approved {% elif
+            request.status == 'disapproved' %} Disapproved {% else %} Pending
             <a
               href="{{ url_for('approve_request', request_id=request._id, action='approve') }}"
               >Approve</a
