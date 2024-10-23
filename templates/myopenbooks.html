@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyOpenBooks</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -83,6 +87,12 @@
       footer p {
         color: white;
       }
+
+      footer span a {
+        margin: 0 0.5em;
+        color: white;
+        text-decoration: none;
+      }
     </style>
   </head>
   <body>
@@ -90,7 +100,7 @@
       <h1>co-author for open books</h1>
       <a href="{{ url_for('home') }}"><button>Home</button></a>
       <span>Welcome, {{ current_user.penname }}!</span>
-      <a href="{{ url_for('logout') }}"><button>LogOut</button></a>
+      <a href="{{ url_for('logout') }}"><button>Log Out</button></a>
     </nav>
     <main>
       <h2>My Openbooks</h2>
@@ -115,18 +125,15 @@
     </main>
     <footer>
       <h5>built by blasttech</h5>
+      <span
+        ><a href="https://x.com/_blastTech" target="_blank">
+          <i class="fab fa-twitter"></i> </a
+        ><a href="https://www.instagram.com/dev_blast/" target="_blank">
+          <i class="fab fa-instagram"></i> </a
+      ></span>
       <p>
         &copy; {{ current_year }} co-author for open books. All rights reserved.
       </p>
-      <span
-        ><a href="http://">
-          <!-- icon or image twitter, whatsapp, linkedin --> </a
-        ><a href="http://">
-          <!-- icon or image twitter, whatsapp, linkedin --> </a
-        ><a href="http://">
-          <!-- icon or image twitter, whatsapp, linkedin -->
-        </a></span
-      >
     </footer>
   </body>
 </html>
